@@ -1,6 +1,9 @@
 const Main = imports.ui.main;
 
-function init() { /* no initialization required */ }
+function init()
+{
+	/* no initialization required */
+}
 
 function enable()
 {
@@ -15,7 +18,8 @@ function enable()
 	}
 }
 
-function disable() {
+function disable()
+{
 	if (typeof Main.panel.statusArea.appMenu._arrow !== 'undefined')
 	{
 		Main.panel.statusArea.appMenu._arrow.show();
