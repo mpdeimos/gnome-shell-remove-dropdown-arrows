@@ -1,4 +1,8 @@
 const Main = imports.ui.main;
+const Lang = imports.lang;
+const ExtensionSystem = imports.ui.extensionSystem;
+
+let _extensionChangedId;
 
 function init()
 {
@@ -7,26 +11,52 @@ function init()
 
 function enable()
 {
-	if (typeof Main.panel.statusArea.appMenu._arrow !== 'undefined')
-	{
-		Main.panel.statusArea.appMenu._arrow.hide();
-	}
-	if (typeof Main.panel.statusArea.aggregateMenu._indicators !== 'undefined')
-	{
-		let indicators =  Main.panel.statusArea.aggregateMenu._indicators;
-		indicators.get_child_at_index(indicators.get_n_children()-1).hide();
-	}
+    edit(true);
+    _extensionChangedId = ExtensionSystem.connect('extension-state-changed', onExtensionStateChanged);
 }
 
 function disable()
 {
-	if (typeof Main.panel.statusArea.appMenu._arrow !== 'undefined')
+	ExtensionSystem.disconnect(_extensionChangedId);
+	edit(false);
+}
+
+function onExtensionStateChanged()
+{
+    edit(true);
+}
+
+function edit(hide)
+{
+	for (id in Main.panel.statusArea)
 	{
-		Main.panel.statusArea.appMenu._arrow.show();
+	    let item = Main.panel.statusArea[id];
+	    if (typeof item.actor !== 'undefined')
+	    {
+            recursiveEdit(item.actor, hide);
+	    }  
 	}
-	if (typeof Main.panel.statusArea.aggregateMenu._indicators !== 'undefined')
-	{
-		let indicators =  Main.panel.statusArea.aggregateMenu._indicators;
-		indicators.get_child_at_index(indicators.get_n_children()-1).show();
-	}
+}
+
+function recursiveEdit(widget, hide)
+{
+    if (widget.text === '\u25BE' // regular text drop down arrow (3.10)
+        || (widget.has_style_class_name && widget.has_style_class_name('popup-menu-arrow'))) // image drop down arrow (3.12)
+    {
+        if (hide)
+        {
+            widget.hide();
+        }
+        else
+        {   
+            widget.show();
+        }
+        
+        return;
+    }
+    
+    if (typeof widget.get_children !== 'undefined')
+    {
+        widget.get_children().forEach(function(child) { recursiveEdit(child, hide); });
+    }
 }
