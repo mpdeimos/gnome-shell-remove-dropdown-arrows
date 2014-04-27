@@ -1,8 +1,8 @@
 language: node_js
 
-install: npm install jshint -g
+install: make deps
 
-script: jshint *.js
+script: make
 
 notifications:
   email:
