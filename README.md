@@ -1,4 +1,6 @@
 Remove Dropdown Arrows Gnome Shell Extension
 ============================================
 
-Removes the dropdown arrows from the AppMenu and SystemMenu (AggregateMenu) which were introduced in Gnome 3.10.
+Removes the dropdown arrows which were introduced in Gnome 3.10 from the App Menu, System Menu, Input Menu, Access Menu, Places Menu, Applications Menu and any other extension that wants to add dropdown arrows.
+
+https://travis-ci.org/mpdeimos/gnome-shell-remove-dropdown-arrows.svg?branch=develop
