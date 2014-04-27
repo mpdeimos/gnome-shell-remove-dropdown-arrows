@@ -1,3 +1,5 @@
+/* jshint esnext:true */
+
 const Main = imports.ui.main;
 const Lang = imports.lang;
 const ExtensionSystem = imports.ui.extensionSystem;
@@ -28,7 +30,7 @@ function onExtensionStateChanged()
 
 function edit(hide)
 {
-	for (id in Main.panel.statusArea)
+	for (let id in Main.panel.statusArea)
 	{
 	    let item = Main.panel.statusArea[id];
 	    if (typeof item.actor !== 'undefined')
@@ -40,8 +42,8 @@ function edit(hide)
 
 function recursiveEdit(widget, hide)
 {
-    if (widget.text === '\u25BE' // regular text drop down arrow (3.10)
-        || (widget.has_style_class_name && widget.has_style_class_name('popup-menu-arrow'))) // image drop down arrow (3.12)
+    if (widget.text === '\u25BE' || // regular text drop down arrow (3.10)
+       (widget.has_style_class_name && widget.has_style_class_name('popup-menu-arrow'))) // image drop down arrow (3.12)
     {
         if (hide)
         {
