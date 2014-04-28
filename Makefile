@@ -11,6 +11,9 @@ dist: README.md\
 	extension.js\
 	metadata.json
 	zip -j remove-dropdown-arrows@mpdeimos.com.zip $?
+	
+publish:
+	.infra/smartfile/publish remove-dropdown-arrows@mpdeimos.com.zip
 
 clean:
 	 rm -f *.zip

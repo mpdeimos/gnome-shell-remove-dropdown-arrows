@@ -1,8 +1,11 @@
 language: node_js
 
+env:
+  - secure: "ZqWi5+UtHF6OVhY+cIxdUtbIomrXBex0URSV8dSihjmAQkZ812HddwFbK9+vb8z+IZ/nmOvA6WkUnW0QfMs0kKr0Sp/y7DzhTr1ResDiOGsDE2csX9nsNaHwaL+nggAo/fYrqzvtuI2LjG7fCaCl5VgWDvuEYyTsLjvrZjy9KRE="
+
 install: make deps
 
-script: make
+script: make all publish
 
 notifications:
   email:
