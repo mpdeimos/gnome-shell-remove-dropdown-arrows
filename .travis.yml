@@ -1,0 +1,15 @@
+language: node_js
+
+env:
+  - secure: "ZqWi5+UtHF6OVhY+cIxdUtbIomrXBex0URSV8dSihjmAQkZ812HddwFbK9+vb8z+IZ/nmOvA6WkUnW0QfMs0kKr0Sp/y7DzhTr1ResDiOGsDE2csX9nsNaHwaL+nggAo/fYrqzvtuI2LjG7fCaCl5VgWDvuEYyTsLjvrZjy9KRE="
+
+install: make deps
+
+script: make dist publish
+
+notifications:
+  email:
+    recipients:
+      - secure: h1GEDEutgLEHdft95f0AsDeIUKBb4FbX0NJNDlIec8f/wXkWpWUjlSTQOnSCFIYzeon1d3kCxGoIM9lBtP/6uM5L71Dtm8EHQTGqqFQ8cszfyJCPRfB+wvnyZvOAMG/V3H/4NECUqOES6DEcrpQTMuz5dDpMGeHnoLK63pttIok=
+    on_success: always
+
