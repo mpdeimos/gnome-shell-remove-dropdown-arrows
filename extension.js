@@ -42,7 +42,7 @@ function edit(hide)
 
 function recursiveEdit(widget, hide)
 {
-    if (widget.text === '\u25BE' || // regular text drop down arrow (3.10)
+    if (widget.text === '\u25BE' || widget.text === '\u25B4' || // regular text drop down arrow (3.10)
        (widget.has_style_class_name && widget.has_style_class_name('popup-menu-arrow'))) // image drop down arrow (3.12)
     {
         if (hide)
