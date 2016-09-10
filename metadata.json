@@ -4,5 +4,5 @@
 	"name": "Remove Dropdown Arrows",
 	"description": "Removes the dropdown arrows which were introduced in Gnome 3.10 from the App Menu, System Menu, Input Menu, Access Menu, Places Menu, Applications Menu and any other extension that wants to add dropdown arrows.",
 	"url": "http://github.com/mpdeimos/gnome-shell-remove-dropdown-arrows",
-	"shell-version": ["3.10","3.12","3.14", "3.16", "3.18", "3.20"]
+	"shell-version": ["3.10","3.12","3.14", "3.16", "3.18", "3.20", "3.21.90", "3.21.91"]
 }
