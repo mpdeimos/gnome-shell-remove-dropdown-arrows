@@ -2,9 +2,9 @@
 
 const Main = imports.ui.main;
 const Lang = imports.lang;
-const ExtensionSystem = imports.ui.extensionSystem;
 
-let _extensionChangedId;
+let signalConnections = [];
+
 
 function init()
 {
@@ -13,31 +13,31 @@ function init()
 
 function enable()
 {
-    edit(true);
-    _extensionChangedId = ExtensionSystem.connect('extension-state-changed', onExtensionStateChanged);
+    Main.panel.actor.get_children().forEach(
+        function(actor) {
+            let connection = {
+                object: actor,
+                id: actor.connect('actor-added', function(child) {
+                    recursiveEdit(child, true);
+                })
+            };
+            signalConnections.push(connection);
+
+            actor.get_children().forEach(function(child) {
+                recursiveEdit(child, true);
+            });
+        });
 }
 
 function disable()
 {
-	ExtensionSystem.disconnect(_extensionChangedId);
-	edit(false);
-}
+    while (signalConnections.length > 0)
+    {
+        let connection = signalConnections.pop();
+        connection.object.disconnect(connection.id);
 
-function onExtensionStateChanged()
-{
-    edit(true);
-}
-
-function edit(hide)
-{
-	for (let id in Main.panel.statusArea)
-	{
-	    let item = Main.panel.statusArea[id];
-	    if (typeof item.actor !== 'undefined')
-	    {
-            recursiveEdit(item.actor, hide);
-	    }  
-	}
+        recursiveEdit(connection.object, false);
+    }
 }
 
 function recursiveEdit(widget, hide)
