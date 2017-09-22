@@ -18,8 +18,7 @@ let dropdowns = [];
  */
 function _apply(actor)
 {
-    if (actor.text === '\u25BE' || actor.text === '\u25B4' || // regular text drop down arrow (3.10)
-       (actor.has_style_class_name && actor.has_style_class_name('popup-menu-arrow'))) // image drop down arrow (3.12)
+    if (actor.has_style_class_name && actor.has_style_class_name('popup-menu-arrow'))
     {
         actor.hide();
 
