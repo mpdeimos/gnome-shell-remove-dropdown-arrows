@@ -18,35 +18,39 @@ let dropdowns = [];
  */
 function _apply(actor)
 {
-    if (actor.has_style_class_name && actor.has_style_class_name('popup-menu-arrow'))
+    if (!actor.has_style_class_name || !actor.has_style_class_name('popup-menu-arrow'))
     {
-        actor.hide();
+        return false;
+    }
+    
+    actor.hide();
 
-        if (dropdowns.indexOf(actor) < 0)
-        {
-            let connection = {
-                object: actor,
-                id: actor.connect('destroy', function() {
-                    let index;
+    if (dropdowns.indexOf(actor) < 0)
+    {
+        let connection = {
+            object: actor,
+            id: actor.connect('destroy', function()
+            {
+                let index;
 
-                    index = signalConnections.indexOf(connection);
-                    if (index >= 0) {
-                        signalConnections.splice(index, 1);
-                    }
+                index = signalConnections.indexOf(connection);
+                if (index >= 0)
+                {
+                    signalConnections.splice(index, 1);
+                }
 
-                    index = dropdowns.indexOf(actor);
-                    if (index >= 0) {
-                        dropdowns.splice(index, 1);
-                    }
-                })};
-            signalConnections.push(connection);
-            dropdowns.push(actor);
-        }
-
-        return true;
+                index = dropdowns.indexOf(actor);
+                if (index >= 0)
+                {
+                    dropdowns.splice(index, 1);
+                }
+            })
+        };
+        signalConnections.push(connection);
+        dropdowns.push(actor);
     }
 
-    return false;
+    return true;
 }
 
 /**
@@ -54,63 +58,72 @@ function _apply(actor)
  */
 function _recursiveApplyInternal(actor, depth)
 {
-    if (typeof actor.get_children !== 'undefined')
+    if (typeof actor.get_children === 'undefined')
     {
-        let children = actor.get_children();
-        let index, actorAddedId, destroyId, timeoutId;
+        return false;
+    }
+    
+    let children = actor.get_children();
+    
+    // If there are no children then it's possible that actor hasn't been fully initialized yet.
+    // Shedule to check later.
+    if (children.length == 0)
+    {
+        _scheduleApply(actor);
+        return false;
+    }
 
-        // If there are no children then it's possible that actor hasn't been fully initialized yet.
-        // Shedule to check later.
-        if (children.length == 0)
+    // Check actor immediate children before using recursion
+    for (let index = 0; index < children.length; index++)
+    {
+        if (_apply(children[index]))
         {
-            actorAddedId = actor.connect('actor-added', function(child) {
-                if (_recursiveApply(child)) {
-                    actor.disconnect(actorAddedId);
-                    actor.disconnect(destroyId);
-                    Mainloop.source_remove(timeoutId);
-
-                    actorAddedId = destroyId = timeoutId = 0;
-                }
-            });
-            destroyId = actor.connect('destroy', function() {
-                if (timeoutId != 0) {
-                    Mainloop.source_remove(timeoutId);
-                    timeoutId = 0;
-                }
-            });
-            timeoutId = Mainloop.idle_add(function() {
-                    actor.disconnect(actorAddedId);
-                    actor.disconnect(destroyId);
-
-                    actorAddedId = destroyId = timeoutId = 0;
-
-                    return GLib.SOURCE_REMOVE;
-                });
-
-            return false;
-        }
-
-        // Check actor immediate children before using recursion
-        for (index = 0; index < children.length; index++)
-        {
-            if (_apply(children[index])) {
-                return true;
-            }
-        }
-
-        // Check children recursively
-        if (depth < MAX_RECURSE_DEPTH)
-        {
-            for (index = 0; index < children.length; index++)
-            {
-                if (_recursiveApplyInternal(children[index], depth + 1)) {
-                    return true;
-                }
-            }        
+            return true;
         }
     }
 
+    // Check children recursively
+    if (depth < MAX_RECURSE_DEPTH)
+    {
+        for (let index = 0; index < children.length; index++)
+        {
+            if (_recursiveApplyInternal(children[index], depth + 1))
+            {
+                return true;
+            }
+        }        
+    }
+
     return false;
+}
+
+function _scheduleApply(actor)
+{
+    let actorAddedId, destroyId, timeoutId;
+    actorAddedId = actor.connect('actor-added', function(child)
+    {
+        if (_recursiveApply(child))
+        {
+            actor.disconnect(actorAddedId);
+            actor.disconnect(destroyId);
+            Mainloop.source_remove(timeoutId);
+            actorAddedId = destroyId = timeoutId = 0;
+        }
+    });
+    destroyId = actor.connect('destroy', function()
+    {
+        if (timeoutId != 0) {
+            Mainloop.source_remove(timeoutId);
+            timeoutId = 0;
+        }
+    });
+    timeoutId = Mainloop.idle_add(function()
+    {
+        actor.disconnect(actorAddedId);
+        actor.disconnect(destroyId);
+        actorAddedId = destroyId = timeoutId = 0;
+        return GLib.SOURCE_REMOVE;
+    });
 }
 
 function _recursiveApply(actor)
@@ -126,7 +139,8 @@ function init()
 function enable()
 {
     Main.panel.actor.get_children().forEach(
-        function(actor) {
+        function(actor)
+        {
             signalConnections.push({
                 object: actor,
                 id: actor.connect('actor-added', _recursiveApply)
