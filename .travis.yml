@@ -1,15 +1,19 @@
 language: node_js
-
 env:
-  - secure: "ZqWi5+UtHF6OVhY+cIxdUtbIomrXBex0URSV8dSihjmAQkZ812HddwFbK9+vb8z+IZ/nmOvA6WkUnW0QfMs0kKr0Sp/y7DzhTr1ResDiOGsDE2csX9nsNaHwaL+nggAo/fYrqzvtuI2LjG7fCaCl5VgWDvuEYyTsLjvrZjy9KRE="
-
+- secure: ZqWi5+UtHF6OVhY+cIxdUtbIomrXBex0URSV8dSihjmAQkZ812HddwFbK9+vb8z+IZ/nmOvA6WkUnW0QfMs0kKr0Sp/y7DzhTr1ResDiOGsDE2csX9nsNaHwaL+nggAo/fYrqzvtuI2LjG7fCaCl5VgWDvuEYyTsLjvrZjy9KRE=
 install: make deps
-
 script: make all publish
-
 notifications:
   email:
     recipients:
-      - secure: h1GEDEutgLEHdft95f0AsDeIUKBb4FbX0NJNDlIec8f/wXkWpWUjlSTQOnSCFIYzeon1d3kCxGoIM9lBtP/6uM5L71Dtm8EHQTGqqFQ8cszfyJCPRfB+wvnyZvOAMG/V3H/4NECUqOES6DEcrpQTMuz5dDpMGeHnoLK63pttIok=
+    - secure: h1GEDEutgLEHdft95f0AsDeIUKBb4FbX0NJNDlIec8f/wXkWpWUjlSTQOnSCFIYzeon1d3kCxGoIM9lBtP/6uM5L71Dtm8EHQTGqqFQ8cszfyJCPRfB+wvnyZvOAMG/V3H/4NECUqOES6DEcrpQTMuz5dDpMGeHnoLK63pttIok=
     on_success: always
-
+deploy:
+  provider: releases
+  api_key:
+    secure: pVieeKuVBwtfvo3hadF3J+xH5yP5+SWV+tkXe1LGTqTd0uc6TbhnPIf7rcjgG8ujfoQqYrkIthJMeQ2Fyz3YisEinY2rYXaaDQk/4X8OEw1+6Qo/FNogycn0GeAu7vnUrlW2RcZxIa1KFweRkCZ553CaqMHurOWar8VukskTzRk=
+  file: remove-dropdown-arrows@mpdeimos.com.zip
+  skip_cleanup: true
+  on:
+    repo: mpdeimos/gnome-shell-remove-dropdown-arrows
+    tags: true
