@@ -22,7 +22,7 @@ function _apply(actor)
     {
         return false;
     }
-    
+
     actor.hide();
 
     if (dropdowns.indexOf(actor) < 0)
@@ -74,24 +74,18 @@ function _recursiveApplyInternal(actor, depth)
     }
 
     // Check actor immediate children before using recursion
-    for (let index = 0; index < children.length; index++)
+    if (children.map(child => _apply(child)).includes(true))
     {
-        if (_apply(children[index]))
-        {
-            return true;
-        }
+        return true;
     }
 
     // Check children recursively
     if (depth < MAX_RECURSE_DEPTH)
     {
-        for (let index = 0; index < children.length; index++)
+        if (children.map(child => _recursiveApplyInternal(child, depth +1)).includes(true))
         {
-            if (_recursiveApplyInternal(children[index], depth + 1))
-            {
-                return true;
-            }
-        }        
+            return true;
+        }
     }
 
     return false;
