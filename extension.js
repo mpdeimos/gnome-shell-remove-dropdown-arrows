@@ -74,7 +74,7 @@ function _recursiveApplyInternal(actor, depth)
     }
 
     // Check actor immediate children before using recursion
-    if (children.map(child => _apply(child)).includes(true))
+    if (children.map(child => _apply(child)).indexOf(true) >= 0)
     {
         return true;
     }
@@ -82,7 +82,7 @@ function _recursiveApplyInternal(actor, depth)
     // Check children recursively
     if (depth < MAX_RECURSE_DEPTH)
     {
-        if (children.map(child => _recursiveApplyInternal(child, depth +1)).includes(true))
+        if (children.map(child => _recursiveApplyInternal(child, depth +1)).indexOf(true) >= 0)
         {
             return true;
         }
