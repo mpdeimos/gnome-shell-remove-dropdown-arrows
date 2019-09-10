@@ -132,7 +132,9 @@ function init()
 
 function enable()
 {
-    Main.panel.actor.get_children().forEach(
+    let panelActor = Main.panel instanceof Clutter.Actor ? Main.panel : Main.panel.actor;
+
+    panelActor.get_children().forEach(
         function(actor)
         {
             signalConnections.push({
