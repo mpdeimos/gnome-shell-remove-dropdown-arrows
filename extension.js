@@ -1,9 +1,9 @@
 /* jshint esnext:true */
 
+const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
-
 
 const MAX_RECURSE_DEPTH = 3;
 
