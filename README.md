@@ -5,4 +5,4 @@ Removes the dropdown arrows which were introduced in Gnome 3.10 from the App Men
 
 ![Screenshot](screenshot.png)
 
-[![Build Status](https://travis-ci.org/mpdeimos/gnome-shell-remove-dropdown-arrows.svg?branch=develop)](https://travis-ci.org/mpdeimos/gnome-shell-remove-dropdown-arrows)
+[![Build Status](https://travis-ci.org/mpdeimos/gnome-shell-remove-dropdown-arrows.svg?branch=master)](https://travis-ci.org/mpdeimos/gnome-shell-remove-dropdown-arrows)

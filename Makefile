@@ -10,6 +10,7 @@ dist: README.md\
 	LICENSE\
 	extension.js\
 	metadata.json
+	sed -i 's/-dev//' metadata.json
 	zip -j remove-dropdown-arrows@mpdeimos.com.zip $?
 	
 publish:
