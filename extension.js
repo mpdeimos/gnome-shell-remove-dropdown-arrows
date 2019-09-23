@@ -1,6 +1,5 @@
 /* jshint esnext:true */
 
-const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
@@ -132,8 +131,12 @@ function init()
 
 function enable()
 {
-    let panelActor = Main.panel instanceof Clutter.Actor ? Main.panel : Main.panel.actor;
-
+    let panelActor = Main.panel;
+    if (typeof panelActor.get_children === 'undefined')
+    {
+        panelActor = panelActor.actor;
+    }
+    
     panelActor.get_children().forEach(
         function(actor)
         {
